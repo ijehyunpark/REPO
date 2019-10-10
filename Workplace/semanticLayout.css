@@ -1,0 +1,69 @@
+body{
+	margin-left: 10%;
+	margin-right: 10%;
+	background-image: url(https://selab.hanyang.ac.kr/courses/cse326/2019/labs/images/3/blueTextureBG.jpg);
+}
+div{
+	text-align: justify;
+	position: relative;
+}
+section:hover{
+
+	background-color: #A6CE39;
+}
+.INF{
+	float: left;
+	margin-left: 20px;
+	width: calc(100% - 200px);
+}
+.BORDER{	
+	border: 5px;
+	border-style: solid;
+	border-width: thick;
+}
+#GREEN{
+	border-color: white;
+	border-width: 10px;
+	background: white;
+	overflow: hidden;
+}
+header{
+	background: #1D2475;
+	color: white;
+	border:none;
+	text-align: right;
+}
+nav{
+	border:none;
+	font-size: 14pt;
+	color: #CCCCCC;
+}
+.PURPLE{
+	border:none;
+	border-bottom-color: blue;
+	border-bottom-style: dashed;
+	border-bottom-width: 2px thick;
+
+}
+.BLUE{
+	border-color: #1D2475;
+	border-width: 4px;
+	border-radius: 15px;
+	background: #99CCFF;
+	padding: 5px;
+	margin-top: 10px;
+}
+.SECTION{
+	overflow: hidden;
+}
+img{
+	float: right;
+}
+#LIN{
+	float: left;
+	width: 150px;
+	background: #3366CC;
+	border-color: 
+}
+.ico{
+}
