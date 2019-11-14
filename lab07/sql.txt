@@ -1,0 +1,90 @@
+#EX1
+create table student (
+	student_id INT NOT NULL PRIMARY KEY,
+	name CHAR(10) NOT NULL,
+	year SMALLINT(6) NOT NULL default 1,
+	dept_no INT NOT NULL,
+	major CHAR(20)
+);
+create table department (
+	dept_no INT NOT NULL auto_increment PRIMARY KEY,
+	dept_name CHAR(20) NOT NULL UNIQUE KEY,
+	office CHAR(20) NOT NULL,
+	office_tel CHAR(13)
+);
+alter table student modify major CHAR(30);
+alter table student add column gender TINYINT(1);
+alter table student drop column gender;
+
+#Change byte type due to wrong type to insert data
+alter table student modify name CHAR(30);
+alter table student modify major CHAR(60);
+alter table department modify dept_name CHAR(60);
+alter table department modify office CHAR(60);
+
+
+#EX2
+insert into student values
+(20070002, 'Jane Smith', 3, 4, 'Business Administration'),
+(20060001, 'Ashley Jackson', 4, 4, 'Business Administration'),
+(20030001, 'Liam Johnson', 4, 2, 'Electrical Engineering'),
+(20040003, 'Jacob Lee', 3, 2, 'Electrical Engineering'),
+(20060002, 'Noah Kim', 3, 1, 'Computer Science'),
+(20100002, 'Ava Lim', 3, 4, 'Business Administration'),
+(20110001, 'Emma Watson', 2, 1, 'Computer Science'),
+(20080003, 'Lisa Maria', 4, 5, 'Law'),
+(20040002, 'Jacob William', 4, 3, 'Law'),
+(20070001, 'Emily Rose', 4, 4, 'Business Administration'),
+(20100001, 'Ethan Hunt', 3, 4, 'Business Administration'),
+(20110002, 'Jason Mraz', 2, 1, 'Electrical Engineering'),
+(20030002, 'John Smith', 5, 1, 'Computer Science'),
+(20070003, 'Sophia Park', 4, 3, 'Law'),
+(20070007, 'James Michael', 2, 4, 'Business Administration'),
+(20100003, 'James Bond', 3, 1, 'Computer Science'),
+(20070005, 'Olivia Madison', 2, 5, 'English Language and Literature');
+
+#wrong dept_no
+update student set dept_no = 3 where major = 'Law';
+
+insert into department(dept_name,office,office_tel) values
+('Computer Science', 'Science Building 101', '02-3290-0123'),
+('Electrical Engineering', 'Engineering Building 401', '02-3290-2345'),
+('Law', 'Law Building 201', '02-3290-7896'),
+( 'Business Administration', 'Business Building 104', '02-3290-1112'),
+('English Language and Literature', 'Language Building 303', '02-3290-4412');
+
+#EX3
+update department set dept_name = 'Electrical and Electronics Engineering' where dept_name = 'Electrical Engineering';
+insert into department(dept_name,office,office_tel) values ('Special Education','Education Building 403','02-3290-2347');
+update student set dept_no = 6,major = 'Special Education' where name = 'Emma Watson';
+delete from student where name = 'Jason Mraz';
+delete from student where name = 'John Smith';
+
+#EX4
+select * from student where major = 'Computer Science';
+select student_id,year,major from student;
+select * from student where year = 3;
+select * from student where year = 1 or year = 2;
+select * from student where dept_no = (select dept_no from department where dept_name = 'Business Administration');
+
+#EX5
+select * from student where student_id like '%2007%';
+select * from student order by student_id;
+select avg(year) from student group by year having year > 3;
+select * from student where student_id like '%2007%' limit 2;
+
+#EX6
+select * from roles where movie_id = (select id from movies where name = 'Pi');
+select first_name,last_name from actors where id in (select actor_id from roles where movie_id = (select id from movies where name = 'Pi'));
+select first_name,last_name from actors where id in (select r1.actor_id from roles r1,roles r2 where r1.movie_id = (select id from movies where name = 'Kill Bill: Vol. 1') and r2.movie_id = (select id from movies where name = 'Kill Bill: Vol. 2') and r1.actor_id = r2.actor_id);
+select * from actors where id in (select * from (select actor_id from roles group by actor_id limit 7) as tmp);
+select genre from movies_genres group by movie_id order by count(movie_id) desc limit 3;
+select first_name,last_name from directors where id = (select * from (select director_id from movies_directors where movie_id in (select id from movies join movies_genres on (movies.id = movies_genres.movie_id) where genre = 'Thriller') group by director_id order by count(movie_id) desc limit 1) as tmp);
+
+#EX7
+select grade from grades where course_id = (select id from courses where name = 'Computer Science 143');
+#charater /A%/,/B%/ is lower than C
+select name,grade from students join grades on grades.student_id = students.id where course_id = (select id from courses where name = 'Computer Science 143') and (grade <'C');
+select tmp.name as student_name,courses.name as course_name,grade from (select name,course_id,grade from students join grades on grades.student_id = students.id where grade <'C') as tmp join courses on tmp.course_id = courses.id;
+select name from courses where id in (select course_id from grades group by course_id having count(student_id)>1);
+
